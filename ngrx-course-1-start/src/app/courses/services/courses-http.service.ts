@@ -1,17 +1,17 @@
 
 
-import {Injectable} from "@angular/core";
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {Course} from "../model/course";
-import {map} from "rxjs/operators";
-import {Lesson} from "../model/lesson";
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {Course} from '../model/course';
+import {map} from 'rxjs/operators';
+import {Lesson} from '../model/lesson';
 
 
 @Injectable()
 export class CoursesHttpService {
 
-    constructor(private http:HttpClient) {
+    constructor(private http: HttpClient) {
 
     }
 
@@ -27,7 +27,7 @@ export class CoursesHttpService {
     }
 
     findLessons(
-        courseId:number,
+        courseId: number,
         pageNumber = 0, pageSize = 3):  Observable<Lesson[]> {
 
         return this.http.get<Lesson[]>('/api/lessons', {
