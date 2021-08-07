@@ -23,3 +23,20 @@ export const coursesReducer = createReducer(
   initialCourseState,
   on(CourseAction.allCoursesLoaded, (state, action) => adapter.addAll(action.courses, state))
 );
+
+/*
+This syntax is a little bit strange
+adapter.getSelectors will return an EntitySelectors
+
+export interface EntitySelectors<T, V> {
+    selectIds: (state: V) => string[] | number[];
+    selectEntities: (state: V) => Dictionary<T>;
+    selectAll: (state: V) => T[]; => we only get the selectAll => export it
+    selectTotal: (state: V) => number;
+}
+ */
+export const
+  {
+    selectAll
+  }
+    = adapter.getSelectors();
