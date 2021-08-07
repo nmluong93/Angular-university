@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {compareCourses, Course} from '../model/course';
-import {Observable} from "rxjs";
+import {Observable} from 'rxjs';
 import {defaultDialogConfig} from '../shared/default-dialog-config';
 import {EditCourseDialogComponent} from '../edit-course-dialog/edit-course-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
