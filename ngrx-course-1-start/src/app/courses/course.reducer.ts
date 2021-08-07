@@ -1,4 +1,4 @@
-import {Course} from './model/course';
+import {compareCourses, Course} from './model/course';
 import {createEntityAdapter, EntityState} from '@ngrx/entity';
 import {createReducer, on} from '@ngrx/store';
 import {CourseAction} from './acitons-type';
@@ -15,7 +15,10 @@ export interface CoursesState extends EntityState<Course> {
 
 }
 
-export const adapter = createEntityAdapter<Course>();
+export const adapter = createEntityAdapter<Course>({
+  sortComparer: compareCourses,
+  selectId: course => course.seqNo
+});
 
 export const initialCourseState = adapter.getInitialState();
 
