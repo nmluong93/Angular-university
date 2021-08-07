@@ -12,7 +12,7 @@ import {CourseAction} from './acitons-type';
 
 // => the above code is so verbose => so using EntityState of NgRx model is better
 export interface CoursesState extends EntityState<Course> {
-
+  allCourseLoaded: boolean;
 }
 
 export const adapter = createEntityAdapter<Course>({
@@ -20,12 +20,17 @@ export const adapter = createEntityAdapter<Course>({
   selectId: course => course.seqNo
 });
 
-export const initialCourseState = adapter.getInitialState();
+export const initialCourseState = adapter.getInitialState({
+  allCourseLoaded: false
+});
 
 export const coursesReducer = createReducer(
   initialCourseState,
-  on(CourseAction.allCoursesLoaded, (state, action) => adapter.addAll(action.courses, state))
-);
+  on(CourseAction.allCoursesLoaded, (state, action) => {
+    return adapter.addAll(action.courses, {...state, allCourseLoaded: true});
+  })
+  )
+;
 
 /*
 This syntax is a little bit strange

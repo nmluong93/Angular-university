@@ -17,7 +17,6 @@ export class AppComponent implements OnInit {
   isLogin$: Observable<boolean>;
   isLogout$: Observable<boolean>;
   loading = true;
-  private user: User;
 
   constructor(private router: Router,
               private store: Store<AppState>) {
@@ -59,7 +58,6 @@ export class AppComponent implements OnInit {
         }
       }
     });
-
   }
 
   logout() {
