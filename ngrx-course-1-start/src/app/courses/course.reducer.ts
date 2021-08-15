@@ -16,6 +16,7 @@ export interface CoursesState extends EntityState<Course> {
 }
 
 export const adapter = createEntityAdapter<Course>({
+  // this is to change the ordering of course by id to seqNo
   sortComparer: compareCourses,
   selectId: course => course.seqNo
 });
@@ -28,6 +29,9 @@ export const coursesReducer = createReducer(
   initialCourseState,
   on(CourseAction.allCoursesLoaded, (state, action) => {
     return adapter.addAll(action.courses, {...state, allCourseLoaded: true});
+  }),
+  on(CourseAction.updateCourse, (state, action) => {
+    return adapter.updateOne(action.update, state);
   })
   )
 ;
