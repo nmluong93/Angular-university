@@ -1,16 +1,16 @@
 
-## The Reactive Angular Course
+## The RxJs In Practice Course
 
-This repository contains the code of the [Reactive Angular Course](https://angular-university.io/course/reactive-angular-course).
+This repository contains the code of the [RxJs In Practice Course](https://angular-university.io/course/rxjs-course).
 
-This course repository is updated to Angular v12.
+This course repository is updated to Angular v12:
 
-![Reactive Angular Course](https://angular-university.s3-us-west-1.amazonaws.com/course-images/reactive-angular-course.jpg)
+![RxJs In Practice Course](https://s3-us-west-1.amazonaws.com/angular-university/course-images/rxjs-in-practice-course.png)
 
 
 # Installation pre-requisites
 
-Please use the latest Node long-term support (LTS) version.
+Please use Node 14 (Long Term Support version).
 
 # Installing the Angular CLI
 
@@ -18,15 +18,16 @@ With the following command the angular-cli will be installed globally in your ma
 
     npm install -g @angular/cli 
 
+
 # How To install this repository
 
 We can install the master branch using the following commands:
 
-    git clone https://github.com/angular-university/reactive-angular-course.git
+    git clone https://github.com/angular-university/rxjs-course.git
     
 This repository is made of several separate npm modules, that are installable separately. For example, to run the au-input module, we can do the following:
     
-    cd reactive-angular-course
+    cd rxjs-course
     npm install
 
 Its also possible to install the modules as usual using npm:
