@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, shareReplay} from 'rxjs/operators';
 import {createHttpObservable} from '../common/util';
 import {Course} from '../model/course';
 
@@ -22,10 +22,10 @@ export class HomeComponent implements OnInit {
     const http$ = createHttpObservable('/api/courses');
 
     const courses$: Observable<Course[]> = http$.pipe(
-      map(res => {
-        const values = Object.values(res['payload']);
-        return values;
-      })
+      map(res => Object.values(res['payload'])),
+      // using this will share the subscription for below two observable which prevent two http requests for two
+      // observables
+      shareReplay()
     );
 
     this.beginnerCourses$ = courses$
