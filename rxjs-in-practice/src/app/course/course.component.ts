@@ -5,6 +5,7 @@ import {concat, fromEvent, interval, Observable} from 'rxjs';
 import {Lesson} from '../model/lesson';
 import {createHttpObservable} from '../common/util';
 import {debounceTime, distinctUntilChanged, map, startWith, switchMap, throttle} from 'rxjs/operators';
+import {debug, RxJsLoggingLevel} from '../common/debug';
 
 
 @Component({
@@ -31,7 +32,10 @@ export class CourseComponent implements OnInit, AfterViewInit {
 
     this.courseId = this.route.snapshot.params['id'];
 
-    this.course$ = createHttpObservable(`/api/courses/${(this.courseId)}`);
+    this.course$ = createHttpObservable(`/api/courses/${(this.courseId)}`)
+      .pipe(
+        debug(RxJsLoggingLevel.INFO, 'Course value ')
+      );
 
   }
 
@@ -53,6 +57,7 @@ export class CourseComponent implements OnInit, AfterViewInit {
       .pipe(
         map(event => event.target.value),
         startWith(''),
+        debug(RxJsLoggingLevel.INFO, 'Search '),
         debounceTime(400),
         distinctUntilChanged(),
         // if any request of search is pending but new search term is emitted (input) then the pending request will be cancelled
