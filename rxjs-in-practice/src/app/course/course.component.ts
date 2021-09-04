@@ -1,10 +1,10 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Course} from '../model/course';
-import {concat, fromEvent, Observable} from 'rxjs';
+import {concat, fromEvent, interval, Observable} from 'rxjs';
 import {Lesson} from '../model/lesson';
 import {createHttpObservable} from '../common/util';
-import {debounceTime, distinctUntilChanged, map, switchMap} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, map, startWith, switchMap, throttle} from 'rxjs/operators';
 
 
 @Component({
@@ -37,7 +37,7 @@ export class CourseComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
 
-    const searchLessons$ = fromEvent<any>(this.input.nativeElement, 'keyup')
+  /*  const searchLessons$ = fromEvent<any>(this.input.nativeElement, 'keyup')
       .pipe(
         map(event => event.target.value),
         debounceTime(400),
@@ -47,7 +47,27 @@ export class CourseComponent implements OnInit, AfterViewInit {
       );
 
     const initialLessons$ = this.loadLessons();
-    this.lessons$ = concat(initialLessons$, searchLessons$);
+    this.lessons$ = concat(initialLessons$, searchLessons$);*/
+
+    this.lessons$ = fromEvent<any>(this.input.nativeElement, 'keyup')
+      .pipe(
+        map(event => event.target.value),
+        startWith(''),
+        debounceTime(400),
+        distinctUntilChanged(),
+        // if any request of search is pending but new search term is emitted (input) then the pending request will be cancelled
+        switchMap(search => this.loadLessons(search))
+      );
+
+
+    // fromEvent<any>(this.input.nativeElement, 'keyup')
+    //   .pipe(
+    //     map(event => event.target.value),
+    //     startWith(''),
+    //     // debounceTime(400),
+    //     throttle(() => interval(500)) // or throttleTime(500)
+    //   ).subscribe(console.log);
+
   }
 
   loadLessons(search = ''): Observable<Lesson[]> {

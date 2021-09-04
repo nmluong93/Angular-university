@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Observable, of, throwError} from 'rxjs';
-import {catchError, finalize, map, shareReplay, tap} from 'rxjs/operators';
+import {Observable, throwError, timer} from 'rxjs';
+import {catchError, delayWhen, finalize, map, retryWhen, shareReplay, tap} from 'rxjs/operators';
 import {createHttpObservable} from '../common/util';
 import {Course} from '../model/course';
 
@@ -28,12 +28,18 @@ export class HomeComponent implements OnInit {
       }),
       finalize(() => {
         // invoked when an observable is completed or having an error
-        console.log('Finalize');
+        console.log('Finalize executed');
       }),
       tap(() => console.log('HTTP request executed')),
       map(res => Object.values(res['payload'])),
       // using this will share the subscription for below two observable which prevent two http requests for multiple subscribers
       shareReplay(),
+
+      // After 2 seconds of error case, retry
+      retryWhen(errors => errors
+        .pipe(
+          delayWhen(() => timer(2_000))
+        ))
       // Recovery error handling
       // catchError(err => of([{
       //   id: 0,
@@ -44,14 +50,6 @@ export class HomeComponent implements OnInit {
       //   category: 'BEGINNER',
       //   lessonsCount: 10
       // }]))
-      // catchError(err => {
-      //   console.log('Error occurs', err);
-      //   return throwError(err);
-      // }),
-      // finalize(() => {
-      //   // invoked when an observable is completed or having an error
-      //   console.log('Finalize');
-      // })
 
     );
 
