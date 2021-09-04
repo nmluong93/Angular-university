@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {interval, merge} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, timeout} from 'rxjs/operators';
+import {createHttpObservable} from '../common/util';
 
 @Component({
   selector: 'about',
@@ -14,10 +15,9 @@ export class AboutComponent implements OnInit {
 
   ngOnInit() {
 
-    const interval$ = interval(1000);
-    const interval2 = interval$.pipe(map(val => 10 * val));
+    const http$ = createHttpObservable('/api/courses');
+    const sub = http$.subscribe(console.log);
 
-    const result = merge(interval$, interval2);
-    result.subscribe(console.log);
+    setTimeout(() => sub.unsubscribe(), 0);
   }
 }
